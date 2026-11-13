@@ -1,0 +1,32 @@
+name: Node.js CI Pipeline
+
+# Gatilhos: o workflow vai rodar quando fizermos um push na branch main.
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    # A máquina virtual onde os passos vão rodar
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Faz o checkout do código do repositório
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # 2. Configura a versão do Node.js
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    # 3. Instala as dependências (lê o package.json)
+    - name: Install dependencies
+      run: npm install
+
+    # 4. Roda a suíte de testes
+    - name: Run tests
+      run: npm test
